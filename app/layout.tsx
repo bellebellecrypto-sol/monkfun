@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ReduceMotionProvider } from "@/components/reduce-motion-provider"
 
 import "./globals.css"
 
@@ -39,7 +40,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
+          <ReduceMotionProvider>{children}</ReduceMotionProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -287,3 +287,17 @@ body::before {
 .animate-ticker {
   animation: ticker-scroll 30s linear infinite;
 }
+
+/* Reduce motion - disables all custom animations */
+.reduce-motion .animate-ticker,
+.reduce-motion .animate-shimmer,
+.reduce-motion .animate-pulse-glow,
+.reduce-motion .animate-float,
+.reduce-motion .animate-streak-pulse,
+.reduce-motion .animate-slide-up,
+.reduce-motion .animate-count-up,
+.reduce-motion .animate-confetti-fall,
+.reduce-motion .animate-pulse {
+  animation: none !important;
+  transition: none !important;
+}

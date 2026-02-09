@@ -33,15 +33,39 @@ const RECENT_TRADES = [
 function SwapModule() {
   const [fromAmount, setFromAmount] = useState("1")
   const [toToken, setToToken] = useState("DARKHORSE")
+  const [slippage, setSlippage] = useState("0.5")
   const tierConfig = getTierByName(USER_TIER)
   const numAmount = Number.parseFloat(fromAmount) || 0
   const rakebackEstimate = (numAmount * 150 * (tierConfig.percent / 100)).toFixed(2)
 
   return (
     <div className="glass rounded-2xl p-4 sm:p-5">
-      <div className="mb-4 flex items-center gap-2">
-        <ArrowLeftRight className="h-4 w-4 text-primary" />
-        <h3 className="text-sm font-bold text-foreground">Quick Swap</h3>
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <ArrowLeftRight className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-bold text-foreground">Quick Swap</h3>
+        </div>
+        {/* Slippage */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-[10px] text-muted-foreground">Slippage</span>
+          <div className="flex items-center gap-0.5 rounded-md border border-border p-0.5">
+            {["0.1", "0.5", "1.0"].map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => setSlippage(s)}
+                className={cn(
+                  "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
+                  slippage === s
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {s}%
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* From */}
@@ -59,6 +83,24 @@ function SwapModule() {
           <span className="rounded-md bg-primary/10 px-2 py-1 text-xs font-bold text-primary">
             SOL
           </span>
+        </div>
+        {/* Quick amounts */}
+        <div className="mt-2 flex gap-1.5">
+          {["0.1", "0.5", "1", "5", "10"].map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setFromAmount(v)}
+              className={cn(
+                "flex-1 rounded-md border py-1.5 text-xs font-medium transition-colors",
+                fromAmount === v
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {v}
+            </button>
+          ))}
         </div>
       </div>
 

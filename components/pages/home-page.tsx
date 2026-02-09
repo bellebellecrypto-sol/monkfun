@@ -1,11 +1,12 @@
 "use client"
 
-import { ArrowRight, Flame, Plus, TrendingUp, Zap } from "lucide-react"
+import { ArrowRight, DollarSign, Flame, Plus, TrendingUp, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { LiveTicker } from "@/components/live-ticker"
 import { useNavigation } from "@/components/app-shell"
 import { cn } from "@/lib/utils"
 
+/* ── Data ── */
 interface TokenCard {
   name: string
   symbol: string
@@ -33,6 +34,7 @@ const NEW_LAUNCHES: { name: string; symbol: string; time: string; mc: string }[]
   { name: "STEVE", symbol: "Steve", time: "16m ago", mc: "$3.1K" },
 ]
 
+/* ── Sub-components ── */
 function MiniSparkline({ data, positive }: { data: number[]; positive: boolean }) {
   const max = Math.max(...data)
   const min = Math.min(...data)
@@ -48,13 +50,7 @@ function MiniSparkline({ data, positive }: { data: number[]; positive: boolean }
     .join(" ")
 
   return (
-    <svg
-      width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
-      className="shrink-0"
-      aria-hidden="true"
-    >
+    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="shrink-0" aria-hidden="true">
       <polyline
         points={points}
         fill="none"
@@ -89,6 +85,55 @@ function HeatMeter({ heat }: { heat: number }) {
   )
 }
 
+function CyclePaidStrip() {
+  return (
+    <div className="flex items-center justify-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-4 py-2.5">
+      <DollarSign className="h-4 w-4 text-primary" />
+      <span className="text-xs text-muted-foreground">This cycle we paid</span>
+      <span className="font-mono text-sm font-bold text-primary text-glow-orange">
+        $284,219.47
+      </span>
+      <span className="text-xs text-muted-foreground">in rakeback</span>
+    </div>
+  )
+}
+
+function TokenCardSkeleton() {
+  return (
+    <div className="glass flex items-center gap-3 rounded-xl p-4 animate-pulse">
+      <div className="h-10 w-10 rounded-lg bg-muted dark:bg-secondary" />
+      <div className="flex-1 space-y-2">
+        <div className="h-3.5 w-24 rounded bg-muted dark:bg-secondary" />
+        <div className="h-3 w-16 rounded bg-muted dark:bg-secondary" />
+        <div className="h-1.5 w-16 rounded-full bg-muted dark:bg-secondary" />
+      </div>
+      <div className="flex flex-col items-end gap-1">
+        <div className="h-7 w-[60px] rounded bg-muted dark:bg-secondary" />
+        <div className="h-3 w-10 rounded bg-muted dark:bg-secondary" />
+      </div>
+    </div>
+  )
+}
+
+function NewLaunchSkeleton() {
+  return (
+    <div className="flex items-center justify-between px-4 py-3 animate-pulse">
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-8 rounded-lg bg-muted dark:bg-secondary" />
+        <div className="space-y-1.5">
+          <div className="h-3.5 w-28 rounded bg-muted dark:bg-secondary" />
+          <div className="h-3 w-20 rounded bg-muted dark:bg-secondary" />
+        </div>
+      </div>
+      <div className="space-y-1 text-right">
+        <div className="ml-auto h-3.5 w-12 rounded bg-muted dark:bg-secondary" />
+        <div className="ml-auto h-3 w-6 rounded bg-muted dark:bg-secondary" />
+      </div>
+    </div>
+  )
+}
+
+/* ── Main Page ── */
 export function HomePage() {
   const { setPage, setSelectedToken } = useNavigation()
 
@@ -101,6 +146,11 @@ export function HomePage() {
     <div className="mx-auto max-w-6xl px-4 py-5 lg:px-6">
       {/* Live Ticker */}
       <LiveTicker className="mb-5" />
+
+      {/* Cycle paid strip */}
+      <div className="mb-5">
+        <CyclePaidStrip />
+      </div>
 
       {/* Hero CTA */}
       <section className="glass relative mb-6 overflow-hidden rounded-2xl">
@@ -164,7 +214,7 @@ export function HomePage() {
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
                 {token.symbol.slice(0, 2)}
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="truncate text-sm font-semibold text-foreground">
                     {token.name}
@@ -230,9 +280,7 @@ export function HomePage() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-semibold text-foreground font-mono">
-                  {token.mc}
-                </p>
+                <p className="text-sm font-semibold text-foreground font-mono">{token.mc}</p>
                 <p className="text-[10px] text-muted-foreground">MC</p>
               </div>
             </button>

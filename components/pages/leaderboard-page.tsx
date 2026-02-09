@@ -20,24 +20,25 @@ interface LeaderboardEntry {
   prevRank: number
   wallet: string
   cashback: number
+  volume: string
   tier: TierName
   isYou?: boolean
   axiomBoost?: boolean
 }
 
 const LEADERBOARD_DATA: LeaderboardEntry[] = [
-  { rank: 1, prevRank: 1, wallet: "7xKp...mR4d", cashback: 4821.5, tier: "Master", axiomBoost: true },
-  { rank: 2, prevRank: 3, wallet: "3bNf...qL7w", cashback: 3247.8, tier: "Diamond", axiomBoost: true },
-  { rank: 3, prevRank: 2, wallet: "9cYt...jP2x", cashback: 2890.3, tier: "Diamond" },
-  { rank: 4, prevRank: 5, wallet: "5dRm...kN8v", cashback: 2134.6, tier: "Platinum", axiomBoost: true },
-  { rank: 5, prevRank: 4, wallet: "8pe9...Am2d", cashback: 1876.2, tier: "Gold", isYou: true },
-  { rank: 6, prevRank: 7, wallet: "2fWs...hT3z", cashback: 1542.9, tier: "Gold" },
-  { rank: 7, prevRank: 6, wallet: "6gXn...eU5c", cashback: 1201.4, tier: "Silver", axiomBoost: true },
-  { rank: 8, prevRank: 9, wallet: "4hVp...fS9b", cashback: 987.6, tier: "Silver" },
-  { rank: 9, prevRank: 8, wallet: "1iZq...gR6a", cashback: 756.3, tier: "Bronze" },
-  { rank: 10, prevRank: 10, wallet: "0jAr...dM4e", cashback: 523.1, tier: "Bronze" },
-  { rank: 11, prevRank: 12, wallet: "Kx8r...pQ3w", cashback: 412.7, tier: "Bronze" },
-  { rank: 12, prevRank: 11, wallet: "Lm4n...hR9s", cashback: 387.2, tier: "Bronze" },
+  { rank: 1, prevRank: 1, wallet: "7xKp...mR4d", cashback: 4821.5, volume: "$6.9M", tier: "Master", axiomBoost: true },
+  { rank: 2, prevRank: 3, wallet: "3bNf...qL7w", cashback: 3247.8, volume: "$5.4M", tier: "Diamond", axiomBoost: true },
+  { rank: 3, prevRank: 2, wallet: "9cYt...jP2x", cashback: 2890.3, volume: "$4.8M", tier: "Diamond" },
+  { rank: 4, prevRank: 5, wallet: "5dRm...kN8v", cashback: 2134.6, volume: "$3.6M", tier: "Platinum", axiomBoost: true },
+  { rank: 5, prevRank: 4, wallet: "8pe9...Am2d", cashback: 1876.2, volume: "$3.1M", tier: "Gold", isYou: true },
+  { rank: 6, prevRank: 7, wallet: "2fWs...hT3z", cashback: 1542.9, volume: "$2.6M", tier: "Gold" },
+  { rank: 7, prevRank: 6, wallet: "6gXn...eU5c", cashback: 1201.4, volume: "$2.0M", tier: "Silver", axiomBoost: true },
+  { rank: 8, prevRank: 9, wallet: "4hVp...fS9b", cashback: 987.6, volume: "$1.6M", tier: "Silver" },
+  { rank: 9, prevRank: 8, wallet: "1iZq...gR6a", cashback: 756.3, volume: "$1.3M", tier: "Bronze" },
+  { rank: 10, prevRank: 10, wallet: "0jAr...dM4e", cashback: 523.1, volume: "$870K", tier: "Bronze" },
+  { rank: 11, prevRank: 12, wallet: "Kx8r...pQ3w", cashback: 412.7, volume: "$690K", tier: "Bronze" },
+  { rank: 12, prevRank: 11, wallet: "Lm4n...hR9s", cashback: 387.2, volume: "$640K", tier: "Bronze" },
 ]
 
 function getRankStyle(rank: number) {
@@ -162,6 +163,9 @@ export function LeaderboardPage() {
                     Cashback
                   </span>
                 </th>
+                <th className="hidden pb-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground md:table-cell">
+                  Volume
+                </th>
                 <th className="hidden pb-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground sm:table-cell">
                   Tier
                 </th>
@@ -198,9 +202,12 @@ export function LeaderboardPage() {
                         </span>
                       )}
                       {entry.axiomBoost && (
-                        <span className="hidden items-center gap-0.5 rounded-full bg-neon-green/10 px-1.5 py-0.5 text-[10px] font-semibold text-neon-green sm:inline-flex">
+                        <span className="group relative hidden items-center gap-0.5 rounded-full bg-neon-green/10 px-1.5 py-0.5 text-[10px] font-semibold text-neon-green sm:inline-flex">
                           <Zap className="h-2.5 w-2.5" />
                           Axiom
+                          <span className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-popover px-2.5 py-1.5 text-[11px] font-normal text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                            Post-migration Axiom user with higher payout rate
+                          </span>
                         </span>
                       )}
                     </div>
@@ -217,6 +224,11 @@ export function LeaderboardPage() {
                       {entry.cashback.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                       })}
+                    </span>
+                  </td>
+                  <td className="hidden py-3 text-right md:table-cell">
+                    <span className="text-xs font-mono text-muted-foreground">
+                      {entry.volume}
                     </span>
                   </td>
                   <td className="hidden py-3 sm:table-cell">

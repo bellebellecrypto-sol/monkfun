@@ -1,10 +1,9 @@
 "use client"
 
-import { useState, createContext, useContext, type ReactNode } from "react"
+import { useState, createContext, useContext, useEffect, type ReactNode } from "react"
 import {
   Home,
   ArrowLeftRight,
-  Coins,
   PlusCircle,
   Gift,
   Trophy,
@@ -13,7 +12,9 @@ import {
   Zap,
   Clock,
   X,
-  Menu,
+  MoreHorizontal,
+  Pin,
+  PinOff,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -47,18 +48,29 @@ export function useNavigation() {
   return useContext(NavigationContext)
 }
 
-const NAV_ITEMS: { id: PageId; label: string; icon: typeof Home }[] = [
+/* ── Nav items ── */
+const SIDEBAR_ITEMS: { id: PageId; label: string; icon: typeof Home }[] = [
   { id: "home", label: "Home", icon: Home },
   { id: "trade", label: "Trade", icon: ArrowLeftRight },
   { id: "create", label: "Create", icon: PlusCircle },
   { id: "rewards", label: "Rewards", icon: Gift },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy },
+  { id: "profile", label: "Profile", icon: User },
+]
+
+const BOTTOM_NAV_ITEMS: { id: PageId | "more"; label: string; icon: typeof Home }[] = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "trade", label: "Trade", icon: ArrowLeftRight },
+  { id: "create", label: "Create", icon: PlusCircle },
+  { id: "rewards", label: "Rewards", icon: Gift },
+  { id: "more", label: "More", icon: MoreHorizontal },
 ]
 
 const USER_TIER: TierName = "Gold"
 const CYCLE_CASHBACK = "$1,876"
 const RESET_LABEL = "2d 04h"
 
+/* ── Rewards Chip (header) ── */
 function RewardsChip({ onClick }: { onClick: () => void }) {
   const config = getTierByName(USER_TIER)
   return (
@@ -80,36 +92,33 @@ function RewardsChip({ onClick }: { onClick: () => void }) {
   )
 }
 
+/* ── Top Bar ── */
 function TopBar({
-  currentPage,
   setPage,
 }: {
   currentPage: PageId
   setPage: (page: PageId) => void
 }) {
   const [searchOpen, setSearchOpen] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/50">
       <div className="flex items-center justify-between px-4 py-2.5 lg:px-6">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setPage("home")}
-            className="flex items-center gap-2"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Zap className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <span className="text-base font-bold text-foreground">
-              MONK<span className="text-primary">fun</span>
-            </span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setPage("home")}
+          className="flex items-center gap-2"
+        >
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <Zap className="h-4 w-4 text-primary-foreground" />
+          </div>
+          <span className="text-base font-bold text-foreground">
+            MONK<span className="text-primary">fun</span>
+          </span>
+        </button>
 
-        {/* Search */}
+        {/* Search (desktop) */}
         <div className="hidden flex-1 items-center justify-center px-6 md:flex">
           {searchOpen ? (
             <div className="relative w-full max-w-md">
@@ -149,7 +158,7 @@ function TopBar({
           <RewardsChip onClick={() => setPage("rewards")} />
           <Button
             size="sm"
-            className="hidden bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 lg:flex"
+            className="hidden gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90 lg:flex"
             onClick={() => setPage("create")}
           >
             <PlusCircle className="h-3.5 w-3.5" />
@@ -165,65 +174,21 @@ function TopBar({
             <User className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">8pe9Am...</span>
           </Button>
-          <button
-            type="button"
-            className="flex items-center justify-center rounded-md p-2 text-muted-foreground lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
         </div>
       </div>
 
-      {/* Mobile search bar */}
+      {/* Mobile search */}
       <div className="border-t border-border/30 px-4 py-2 md:hidden">
         <div className="flex items-center gap-2 rounded-lg border border-border bg-card/60 px-3 py-2 text-sm text-muted-foreground">
           <Search className="h-4 w-4" />
           <span>Search tokens...</span>
         </div>
       </div>
-
-      {/* Mobile dropdown nav */}
-      {mobileMenuOpen && (
-        <div className="border-t border-border/50 px-4 pb-4 lg:hidden">
-          <nav className="flex flex-col gap-1 pt-2">
-            {NAV_ITEMS.map((item) => {
-              const Icon = item.icon
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => {
-                    setPage(item.id)
-                    setMobileMenuOpen(false)
-                  }}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                    currentPage === item.id
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                </button>
-              )
-            })}
-            <div className="mt-2 flex items-center gap-2 px-3">
-              <ThemeToggle />
-            </div>
-          </nav>
-        </div>
-      )}
     </header>
   )
 }
 
+/* ── Desktop Sidebar (collapsed, expands on hover, pinnable) ── */
 function DesktopSidebar({
   currentPage,
   setPage,
@@ -231,41 +196,88 @@ function DesktopSidebar({
   currentPage: PageId
   setPage: (page: PageId) => void
 }) {
+  const [pinned, setPinned] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const expanded = pinned || hovered
+
+  useEffect(() => {
+    const stored = localStorage.getItem("sidebar-pinned")
+    if (stored === "true") setPinned(true)
+  }, [])
+
+  const togglePin = () => {
+    const next = !pinned
+    setPinned(next)
+    localStorage.setItem("sidebar-pinned", String(next))
+  }
+
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-border/50 lg:block">
-      <nav className="sticky top-[57px] flex flex-col gap-1 p-3">
-        {NAV_ITEMS.map((item) => {
+    <aside
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={cn(
+        "hidden shrink-0 border-r border-border/50 transition-all duration-200 lg:block",
+        expanded ? "w-52" : "w-[60px]"
+      )}
+    >
+      <nav className="sticky top-[57px] flex flex-col gap-1 p-2">
+        {SIDEBAR_ITEMS.map((item) => {
           const Icon = item.icon
+          const isActive = currentPage === item.id
           return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setPage(item.id)}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                currentPage === item.id
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+            <div key={item.id} className="relative group">
+              <button
+                type="button"
+                onClick={() => setPage(item.id)}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                )}
+              >
+                <Icon className="h-4.5 w-4.5 shrink-0" />
+                <span
+                  className={cn(
+                    "truncate transition-opacity duration-200",
+                    expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+                  )}
+                >
+                  {item.label}
+                </span>
+              </button>
+              {/* Tooltip when collapsed */}
+              {!expanded && (
+                <div className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                  {item.label}
+                </div>
               )}
-            >
-              <Icon className="h-4 w-4" />
-              {item.label}
-            </button>
+            </div>
           )
         })}
-        <div className="mt-4 border-t border-border/50 pt-4">
+
+        {/* Pin toggle */}
+        <div className="mt-4 border-t border-border/50 pt-3">
           <button
             type="button"
-            onClick={() => setPage("profile")}
+            onClick={togglePin}
             className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-              currentPage === "profile"
-                ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/50",
             )}
           >
-            <User className="h-4 w-4" />
-            Profile
+            {pinned ? (
+              <PinOff className="h-4 w-4 shrink-0" />
+            ) : (
+              <Pin className="h-4 w-4 shrink-0" />
+            )}
+            <span
+              className={cn(
+                "truncate transition-opacity duration-200",
+                expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+              )}
+            >
+              {pinned ? "Unpin sidebar" : "Pin sidebar"}
+            </span>
           </button>
         </div>
       </nav>
@@ -273,6 +285,7 @@ function DesktopSidebar({
   )
 }
 
+/* ── Mobile Bottom Nav + More Sheet ── */
 function MobileBottomNav({
   currentPage,
   setPage,
@@ -280,42 +293,94 @@ function MobileBottomNav({
   currentPage: PageId
   setPage: (page: PageId) => void
 }) {
-  const bottomItems = NAV_ITEMS.slice(0, 5)
+  const [moreOpen, setMoreOpen] = useState(false)
+
+  const handleNavClick = (id: PageId | "more") => {
+    if (id === "more") {
+      setMoreOpen(!moreOpen)
+    } else {
+      setPage(id)
+      setMoreOpen(false)
+    }
+  }
+
+  const isMoreActive = currentPage === "leaderboard" || currentPage === "profile"
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50 lg:hidden">
-      <div className="flex items-center justify-around px-1 py-1.5">
-        {bottomItems.map((item) => {
-          const Icon = item.icon
-          const isActive = currentPage === item.id
-          return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => setPage(item.id)}
-              className={cn(
-                "flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors",
-                isActive
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              )}
-            >
-              <Icon
+    <>
+      {/* More sheet overlay */}
+      {moreOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setMoreOpen(false)}>
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
+          <div
+            className="absolute bottom-[60px] left-0 right-0 rounded-t-2xl border-t border-border bg-card p-4 shadow-xl animate-slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
+            <nav className="flex flex-col gap-1">
+              {[
+                { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy },
+                { id: "profile" as PageId, label: "Profile & Settings", icon: User },
+              ].map((item) => {
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleNavClick(item.id)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-colors",
+                      currentPage === item.id
+                        ? "bg-primary/10 text-primary"
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    {item.label}
+                  </button>
+                )
+              })}
+            </nav>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom nav bar */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/50 lg:hidden">
+        <div className="flex items-center justify-around px-1 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]">
+          {BOTTOM_NAV_ITEMS.map((item) => {
+            const Icon = item.icon
+            const isActive =
+              item.id === "more"
+                ? isMoreActive || moreOpen
+                : currentPage === item.id
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleNavClick(item.id)}
                 className={cn(
-                  "h-5 w-5",
-                  isActive && item.id === "create" && "text-primary"
+                  "flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors",
+                  isActive ? "text-primary" : "text-muted-foreground"
                 )}
-              />
-              {item.label}
-            </button>
-          )
-        })}
-      </div>
-    </nav>
+              >
+                <Icon className="h-5 w-5" />
+                {item.label}
+              </button>
+            )
+          })}
+        </div>
+      </nav>
+    </>
   )
 }
 
-export function AppShell({ children }: { children: (ctx: NavigationContextValue) => ReactNode }) {
+/* ── App Shell ── */
+export function AppShell({
+  children,
+}: {
+  children: (ctx: NavigationContextValue) => ReactNode
+}) {
   const [currentPage, setCurrentPage] = useState<PageId>("home")
   const [selectedToken, setSelectedToken] = useState<string | null>(null)
 
@@ -337,9 +402,7 @@ export function AppShell({ children }: { children: (ctx: NavigationContextValue)
         <TopBar currentPage={currentPage} setPage={setPage} />
         <div className="flex flex-1">
           <DesktopSidebar currentPage={currentPage} setPage={setPage} />
-          <main className="flex-1 pb-20 lg:pb-0">
-            {children(ctx)}
-          </main>
+          <main className="flex-1 pb-20 lg:pb-0">{children(ctx)}</main>
         </div>
         <MobileBottomNav currentPage={currentPage} setPage={setPage} />
       </div>

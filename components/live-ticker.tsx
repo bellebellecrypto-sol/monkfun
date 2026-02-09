@@ -1,5 +1,8 @@
 "use client"
 
+import { Pause, Play } from "lucide-react"
+import { useState } from "react"
+import { useReduceMotion } from "@/components/reduce-motion-provider"
 import { cn } from "@/lib/utils"
 
 const TICKER_ITEMS = [
@@ -14,7 +17,47 @@ const TICKER_ITEMS = [
 ]
 
 export function LiveTicker({ className }: { className?: string }) {
+  const { reduceMotion } = useReduceMotion()
+  const [paused, setPaused] = useState(false)
   const items = [...TICKER_ITEMS, ...TICKER_ITEMS]
+
+  // If reduce motion, show static list
+  if (reduceMotion) {
+    return (
+      <div
+        className={cn(
+          "overflow-hidden rounded-xl border border-border/50 bg-card/50",
+          className
+        )}
+      >
+        <div className="flex items-center">
+          <div className="flex shrink-0 items-center gap-2 border-r border-border/50 bg-secondary/40 px-3 py-2">
+            <div className="h-1.5 w-1.5 rounded-full bg-neon-green" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Live
+            </span>
+          </div>
+          <div className="flex items-center gap-4 overflow-x-auto px-4 py-2">
+            {TICKER_ITEMS.slice(0, 3).map((item, i) => (
+              <span
+                key={`${item.wallet}-${i}`}
+                className="inline-flex shrink-0 items-center gap-1.5 text-xs"
+              >
+                <span className="font-mono text-muted-foreground">
+                  {item.wallet}
+                </span>
+                <span className="text-muted-foreground">{item.action}</span>
+                <span className="font-mono font-semibold text-primary">
+                  ${item.amount.toFixed(2)}
+                </span>
+                <span className="text-muted-foreground">rakeback</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -31,7 +74,13 @@ export function LiveTicker({ className }: { className?: string }) {
           </span>
         </div>
         <div className="min-w-0 flex-1 overflow-hidden">
-          <div className="animate-ticker flex items-center gap-6 whitespace-nowrap px-4 py-2">
+          <div
+            className={cn(
+              "flex items-center gap-6 whitespace-nowrap px-4 py-2",
+              !paused && "animate-ticker"
+            )}
+            style={paused ? { animationPlayState: "paused" } : undefined}
+          >
             {items.map((item, i) => (
               <span
                 key={`${item.wallet}-${i}`}
@@ -40,9 +89,7 @@ export function LiveTicker({ className }: { className?: string }) {
                 <span className="font-mono text-muted-foreground">
                   {item.wallet}
                 </span>
-                <span className="text-muted-foreground">
-                  {item.action}
-                </span>
+                <span className="text-muted-foreground">{item.action}</span>
                 <span className="font-mono font-semibold text-primary">
                   ${item.amount.toFixed(2)}
                 </span>
@@ -52,6 +99,18 @@ export function LiveTicker({ className }: { className?: string }) {
             ))}
           </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setPaused(!paused)}
+          className="shrink-0 border-l border-border/50 px-3 py-2 text-muted-foreground transition-colors hover:text-foreground"
+          aria-label={paused ? "Resume ticker" : "Pause ticker"}
+        >
+          {paused ? (
+            <Play className="h-3 w-3" />
+          ) : (
+            <Pause className="h-3 w-3" />
+          )}
+        </button>
       </div>
     </div>
   )
