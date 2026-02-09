@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "BONKfun | Rakeback Rewards",
+  title: "MONKfun | Rakeback Rewards",
   description:
-    "Track your rakeback, climb the tiers, and claim your cashback rewards on BONKfun.",
+    "Track your rakeback, climb the tiers, and claim your cashback rewards on MONKfun.",
 }
 
 export const viewport: Viewport = {

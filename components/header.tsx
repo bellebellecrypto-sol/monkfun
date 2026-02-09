@@ -25,7 +25,7 @@ export function Header() {
             <Zap className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold text-foreground">
-            BONK<span className="text-primary">fun</span>
+            MONK<span className="text-primary">fun</span>
           </span>
         </div>
 

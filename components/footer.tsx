@@ -9,7 +9,7 @@ export function Footer() {
             <Zap className="h-3.5 w-3.5 text-primary-foreground" />
           </div>
           <span className="text-sm font-semibold text-foreground">
-            BONK<span className="text-primary">fun</span>
+            MONK<span className="text-primary">fun</span>
           </span>
         </div>
         <div className="flex items-center gap-6 text-xs text-muted-foreground">
@@ -27,7 +27,7 @@ export function Footer() {
           </a>
         </div>
         <p className="text-xs text-muted-foreground">
-          {"2026 Let's BONK! All Rights Reserved."}
+          {"2026 Let's MONK! All Rights Reserved."}
         </p>
       </div>
     </footer>
