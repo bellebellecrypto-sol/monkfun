@@ -48,7 +48,7 @@ export function StreakCard({
                 "h-2 w-full rounded-full transition-all",
                 active
                   ? "bg-primary glow-orange-sm"
-                  : "bg-secondary"
+                  : "bg-muted dark:bg-secondary"
               )}
             />
             <span className="text-[9px] text-muted-foreground">

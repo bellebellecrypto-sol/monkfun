@@ -1,6 +1,7 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+import { ThemeProvider } from "@/components/theme-provider"
 
 import "./globals.css"
 
@@ -11,13 +12,13 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "BONKfun | Rakeback Leaderboard",
+  title: "BONKfun | Rakeback Rewards",
   description:
     "Track your rakeback, climb the tiers, and claim your cashback rewards on BONKfun.",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0a0c14",
+  themeColor: "#f5f0ea",
   width: "device-width",
   initialScale: 1,
 }
@@ -28,11 +29,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

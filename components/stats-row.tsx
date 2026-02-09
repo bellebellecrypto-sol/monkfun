@@ -23,7 +23,7 @@ function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <div className={cn("glass rounded-xl p-4", className)}>
+    <div className={cn("glass rounded-xl p-4 transition-shadow hover:shadow-md", className)}>
       <div className="mb-2 flex items-center justify-between">
         <span className="text-xs text-muted-foreground">{label}</span>
         <div

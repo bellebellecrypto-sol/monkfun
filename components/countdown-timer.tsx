@@ -45,7 +45,7 @@ export function CountdownTimer({
       {blocks.map((block, i) => (
         <div key={block.label} className="flex items-center gap-1.5 sm:gap-2">
           <div className="flex flex-col items-center">
-            <div className="glass-bright flex h-10 w-10 items-center justify-center rounded-lg text-base font-bold tabular-nums text-foreground sm:h-12 sm:w-12 sm:text-lg">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-base font-bold tabular-nums text-foreground shadow-sm sm:h-12 sm:w-12 sm:text-lg">
               {String(block.value).padStart(2, "0")}
             </div>
             <span className="mt-1 text-[10px] uppercase tracking-wider text-muted-foreground">

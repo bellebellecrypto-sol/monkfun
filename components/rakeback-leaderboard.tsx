@@ -2,6 +2,7 @@
 
 import { TierBadge, type TierName } from "@/components/tier-badge"
 import { cn } from "@/lib/utils"
+import { Zap } from "lucide-react"
 
 interface LeaderboardEntry {
   rank: number
@@ -9,16 +10,17 @@ interface LeaderboardEntry {
   cashback: number
   tier: TierName
   isYou?: boolean
+  axiomBoost?: boolean
 }
 
 const LEADERBOARD_DATA: LeaderboardEntry[] = [
-  { rank: 1, wallet: "7xKp...mR4d", cashback: 4821.5, tier: "Master" },
-  { rank: 2, wallet: "3bNf...qL7w", cashback: 3247.8, tier: "Diamond" },
+  { rank: 1, wallet: "7xKp...mR4d", cashback: 4821.5, tier: "Master", axiomBoost: true },
+  { rank: 2, wallet: "3bNf...qL7w", cashback: 3247.8, tier: "Diamond", axiomBoost: true },
   { rank: 3, wallet: "9cYt...jP2x", cashback: 2890.3, tier: "Diamond" },
-  { rank: 4, wallet: "5dRm...kN8v", cashback: 2134.6, tier: "Platinum" },
+  { rank: 4, wallet: "5dRm...kN8v", cashback: 2134.6, tier: "Platinum", axiomBoost: true },
   { rank: 5, wallet: "8pe9...Am2d", cashback: 1876.2, tier: "Gold", isYou: true },
   { rank: 6, wallet: "2fWs...hT3z", cashback: 1542.9, tier: "Gold" },
-  { rank: 7, wallet: "6gXn...eU5c", cashback: 1201.4, tier: "Silver" },
+  { rank: 7, wallet: "6gXn...eU5c", cashback: 1201.4, tier: "Silver", axiomBoost: true },
   { rank: 8, wallet: "4hVp...fS9b", cashback: 987.6, tier: "Silver" },
   { rank: 9, wallet: "1iZq...gR6a", cashback: 756.3, tier: "Bronze" },
   { rank: 10, wallet: "0jAr...dM4e", cashback: 523.1, tier: "Bronze" },
@@ -41,12 +43,14 @@ export function RakebackLeaderboard({ className }: { className?: string }) {
             Rakeback Leaderboard
           </h2>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            3-day epoch &middot; Cashback earned, not P&L
+            Cashback earned, not P&L &middot; Post-migration only
           </p>
         </div>
-        <div className="flex items-center gap-2 rounded-lg bg-secondary/60 px-3 py-1.5">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-neon-green" />
-          <span className="text-xs font-medium text-neon-green">Live</span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 rounded-lg bg-secondary/60 px-3 py-1.5">
+            <div className="h-2 w-2 animate-pulse rounded-full bg-neon-green" />
+            <span className="text-xs font-medium text-neon-green">Live</span>
+          </div>
         </div>
       </div>
 
@@ -74,9 +78,9 @@ export function RakebackLeaderboard({ className }: { className?: string }) {
               <tr
                 key={entry.rank}
                 className={cn(
-                  "border-b border-border/20 transition-colors",
+                  "border-b border-border/20 transition-colors hover:bg-secondary/30",
                   entry.isYou &&
-                    "bg-primary/5 border-primary/20"
+                    "bg-primary/5 border-primary/20 hover:bg-primary/8"
                 )}
                 style={{ animationDelay: `${i * 60}ms` }}
               >
@@ -98,6 +102,12 @@ export function RakebackLeaderboard({ className }: { className?: string }) {
                     {entry.isYou && (
                       <span className="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-semibold text-primary">
                         YOU
+                      </span>
+                    )}
+                    {entry.axiomBoost && (
+                      <span className="hidden items-center gap-0.5 rounded-full bg-neon-green/10 px-1.5 py-0.5 text-[10px] font-semibold text-neon-green sm:inline-flex">
+                        <Zap className="h-2.5 w-2.5" />
+                        Axiom
                       </span>
                     )}
                   </div>

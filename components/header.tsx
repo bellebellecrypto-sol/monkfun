@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Menu, X, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -36,7 +37,7 @@ export function Header() {
               href={link.href}
               className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                 link.active
-                  ? "text-primary"
+                  ? "text-primary font-semibold"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -45,8 +46,9 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Wallet */}
-        <div className="flex items-center gap-3">
+        {/* Right side: toggle + wallet + mobile menu */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle className="hidden sm:flex" />
           <Button
             size="sm"
             className="hidden bg-primary text-primary-foreground hover:bg-primary/90 sm:flex"
@@ -78,19 +80,22 @@ export function Header() {
                 href={link.href}
                 className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   link.active
-                    ? "text-primary"
+                    ? "text-primary font-semibold"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {link.label}
               </a>
             ))}
-            <Button
-              size="sm"
-              className="mt-2 bg-primary text-primary-foreground hover:bg-primary/90 sm:hidden"
-            >
-              8pe9Am...
-            </Button>
+            <div className="mt-3 flex items-center justify-between">
+              <ThemeToggle />
+              <Button
+                size="sm"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 sm:hidden"
+              >
+                8pe9Am...
+              </Button>
+            </div>
           </nav>
         </div>
       )}

@@ -71,7 +71,7 @@ export function TierProgress({
               {progress.toFixed(1)}%
             </span>
           </div>
-          <div className="relative h-3 overflow-hidden rounded-full bg-secondary">
+          <div className="relative h-3 overflow-hidden rounded-full bg-muted dark:bg-secondary">
             <div
               className="h-full rounded-full transition-all duration-700 ease-out"
               style={{

@@ -29,7 +29,7 @@ export function EarningsToast({ amount, show, onClose }: EarningsToastProps) {
   return (
     <div
       className={cn(
-        "fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl border border-primary/30 bg-card px-4 py-3 shadow-2xl transition-all duration-300 glow-orange-sm",
+        "fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl border border-primary/20 bg-card px-4 py-3 shadow-lg transition-all duration-300 dark:shadow-2xl glow-orange-sm",
         visible
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0"

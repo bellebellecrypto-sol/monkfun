@@ -47,7 +47,7 @@ export function ClaimCard({
         </div>
 
         <div className="mb-5 space-y-3">
-          <div className="flex items-center justify-between rounded-xl bg-secondary/50 px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl border border-border/50 bg-muted/50 px-4 py-3 dark:bg-secondary/50 dark:border-transparent">
             <div>
               <p className="text-xs text-muted-foreground">SOL Rakeback</p>
               <p className="text-lg font-bold text-foreground font-mono">
@@ -66,7 +66,7 @@ export function ClaimCard({
             </Button>
           </div>
 
-          <div className="flex items-center justify-between rounded-xl bg-secondary/50 px-4 py-3">
+          <div className="flex items-center justify-between rounded-xl border border-border/50 bg-muted/50 px-4 py-3 dark:bg-secondary/50 dark:border-transparent">
             <div>
               <p className="text-xs text-muted-foreground">USD1 Rakeback</p>
               <p className="text-lg font-bold text-foreground font-mono">

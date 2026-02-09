@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Header } from "@/components/header"
 import { EpochHero } from "@/components/epoch-hero"
 import { StatsRow } from "@/components/stats-row"
+import { LiveTicker } from "@/components/live-ticker"
 import { RakebackLeaderboard } from "@/components/rakeback-leaderboard"
 import { TierProgress } from "@/components/tier-progress"
 import { ClaimCard } from "@/components/claim-card"
@@ -29,8 +30,7 @@ export default function Page() {
 
   useEffect(() => {
     setMounted(true)
-    // Show earnings toast after 2s
-    const timer = setTimeout(() => setShowToast(true), 2000)
+    const timer = setTimeout(() => setShowToast(true), 2500)
     return () => clearTimeout(timer)
   }, [])
 
@@ -46,30 +46,28 @@ export default function Page() {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background transition-colors">
       <Header />
 
-      <main className="mx-auto max-w-7xl px-4 py-6 lg:px-6 lg:py-8">
+      <main className="mx-auto max-w-7xl px-4 py-5 lg:px-6 lg:py-8">
+        {/* Live Activity Ticker */}
+        <LiveTicker className="mb-5" />
+
         {/* Epoch Hero */}
         <EpochHero
           currentTier="Gold"
           epochEnd={getEpochEnd()}
           epochNumber={47}
-          className="mb-6"
+          className="mb-5"
         />
 
         {/* Stats Row */}
-        <StatsRow className="mb-6" />
+        <StatsRow className="mb-5" />
 
-        {/* Main Grid: Leaderboard + Sidebar */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Leaderboard - 2 cols */}
-          <div className="lg:col-span-2">
-            <RakebackLeaderboard />
-          </div>
-
-          {/* Sidebar - 1 col */}
-          <div className="flex flex-col gap-6">
+        {/* Main Grid: Mobile stacked, Desktop 2-col (Tier/Claim left, Leaderboard right) */}
+        <div className="grid gap-5 lg:grid-cols-3">
+          {/* Left Sidebar - Tier + Claim (shown first on mobile) */}
+          <div className="flex flex-col gap-5 lg:order-1">
             <TierProgress
               currentTier="Gold"
               currentVolume={87500}
@@ -81,10 +79,15 @@ export default function Page() {
               onClaim={handleClaim}
             />
           </div>
+
+          {/* Leaderboard - 2 cols (shown second on mobile, right on desktop) */}
+          <div className="lg:order-2 lg:col-span-2">
+            <RakebackLeaderboard />
+          </div>
         </div>
 
         {/* Bottom Row: Streaks + VIP */}
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="mt-5 grid gap-5 lg:grid-cols-2">
           <StreakCard
             currentStreak={5}
             bestStreak={12}

@@ -66,7 +66,7 @@ export function VipLounge({
       {/* Chat area */}
       <div className="relative">
         {!isVip && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-card/90 backdrop-blur-sm dark:bg-background/80">
             <Lock className="mb-2 h-6 w-6 text-muted-foreground" />
             <p className="mb-1 text-sm font-semibold text-foreground">
               VIP Access Required
@@ -137,7 +137,7 @@ export function VipLounge({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 disabled={!isVip}
-                className="w-full rounded-lg bg-secondary/60 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-lg border border-border/50 bg-muted/50 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-transparent dark:bg-secondary/60"
               />
             </div>
             <Button
