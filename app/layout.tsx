@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "MONKfun | Rakeback Rewards",
+  title: "MONKfun | Create, Trade & Earn Rakeback",
   description:
-    "Track your rakeback, climb the tiers, and claim your cashback rewards on MONKfun.",
+    "Create memecoins, trade tokens, and earn cashback on every trade. Volume-based rakeback rewards paid every 3-day cycle.",
 }
 
 export const viewport: Viewport = {
