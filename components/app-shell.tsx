@@ -15,6 +15,8 @@ import {
   MoreHorizontal,
   Pin,
   PinOff,
+  Coins,
+  DollarSign,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -27,6 +29,7 @@ export type PageId =
   | "token"
   | "create"
   | "rewards"
+  | "earnings"
   | "leaderboard"
   | "profile"
 
@@ -54,6 +57,7 @@ const SIDEBAR_ITEMS: { id: PageId; label: string; icon: typeof Home }[] = [
   { id: "trade", label: "Trade", icon: ArrowLeftRight },
   { id: "create", label: "Create", icon: PlusCircle },
   { id: "rewards", label: "Rewards", icon: Gift },
+  { id: "earnings", label: "Earnings", icon: Coins },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
 ]
@@ -69,6 +73,7 @@ const BOTTOM_NAV_ITEMS: { id: PageId | "more"; label: string; icon: typeof Home 
 const USER_TIER: TierName = "Gold"
 const CYCLE_CASHBACK = "$1,876"
 const RESET_LABEL = "2d 04h"
+const CLAIMABLE_TOTAL = "$689"
 
 /* ── Rewards Chip (header) ── */
 function RewardsChip({ onClick }: { onClick: () => void }) {
@@ -156,6 +161,15 @@ function TopBar({
         {/* Right side */}
         <div className="flex items-center gap-2">
           <RewardsChip onClick={() => setPage("rewards")} />
+          {/* Claimable earnings chip */}
+          <button
+            type="button"
+            onClick={() => setPage("earnings")}
+            className="hidden items-center gap-1.5 rounded-full border border-neon-green/30 bg-neon-green/5 px-2.5 py-1.5 text-xs font-semibold text-neon-green transition-colors hover:bg-neon-green/10 md:flex"
+          >
+            <DollarSign className="h-3 w-3" />
+            {CLAIMABLE_TOTAL}
+          </button>
           <Button
             size="sm"
             className="hidden gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90 lg:flex"
@@ -236,20 +250,35 @@ function DesktopSidebar({
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
-                <Icon className="h-4.5 w-4.5 shrink-0" />
+                <span className="relative shrink-0">
+                  <Icon className="h-4.5 w-4.5" />
+                  {item.id === "earnings" && !expanded && (
+                    <span className="absolute -right-1.5 -top-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary px-0.5 text-[7px] font-bold text-primary-foreground">
+                      $
+                    </span>
+                  )}
+                </span>
                 <span
                   className={cn(
-                    "truncate transition-opacity duration-200",
+                    "flex flex-1 items-center gap-2 truncate transition-opacity duration-200",
                     expanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
                   )}
                 >
                   {item.label}
+                  {item.id === "earnings" && (
+                    <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
+                      {CLAIMABLE_TOTAL}
+                    </span>
+                  )}
                 </span>
               </button>
               {/* Tooltip when collapsed */}
               {!expanded && (
-                <div className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
+                <div className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
                   {item.label}
+                  {item.id === "earnings" && (
+                    <span className="ml-1.5 text-primary">{CLAIMABLE_TOTAL} claimable</span>
+                  )}
                 </div>
               )}
             </div>
@@ -304,7 +333,8 @@ function MobileBottomNav({
     }
   }
 
-  const isMoreActive = currentPage === "leaderboard" || currentPage === "profile"
+  const isMoreActive = currentPage === "leaderboard" || currentPage === "profile" || currentPage === "earnings"
+  const hasClaimable = true // mock: > 0
 
   return (
     <>
@@ -319,8 +349,9 @@ function MobileBottomNav({
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
             <nav className="flex flex-col gap-1">
               {[
-                { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy },
-                { id: "profile" as PageId, label: "Profile & Settings", icon: User },
+                { id: "earnings" as PageId, label: "Earnings", icon: Coins, badge: CLAIMABLE_TOTAL },
+                { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy, badge: null },
+                { id: "profile" as PageId, label: "Profile & Settings", icon: User, badge: null },
               ].map((item) => {
                 const Icon = item.icon
                 return (
@@ -336,7 +367,12 @@ function MobileBottomNav({
                     )}
                   >
                     <Icon className="h-5 w-5" />
-                    {item.label}
+                    <span className="flex-1 text-left">{item.label}</span>
+                    {item.badge && (
+                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
+                        {item.badge}
+                      </span>
+                    )}
                   </button>
                 )
               })}
@@ -360,11 +396,18 @@ function MobileBottomNav({
                 type="button"
                 onClick={() => handleNavClick(item.id)}
                 className={cn(
-                  "flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors",
+                  "relative flex flex-col items-center gap-0.5 rounded-lg px-3 py-1.5 text-[10px] font-medium transition-colors",
                   isActive ? "text-primary" : "text-muted-foreground"
                 )}
               >
-                <Icon className="h-5 w-5" />
+                <span className="relative">
+                  <Icon className="h-5 w-5" />
+                  {item.id === "more" && hasClaimable && (
+                    <span className="absolute -right-2.5 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-0.5 text-[7px] font-bold text-primary-foreground">
+                      $
+                    </span>
+                  )}
+                </span>
                 {item.label}
               </button>
             )

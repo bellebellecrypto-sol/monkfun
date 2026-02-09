@@ -8,6 +8,7 @@ import { TokenPage } from "@/components/pages/token-page"
 import { CreatePage } from "@/components/pages/create-page"
 import { RewardsPage } from "@/components/pages/rewards-page"
 import { LeaderboardPage } from "@/components/pages/leaderboard-page"
+import { EarningsHub } from "@/components/pages/earnings-hub"
 import { ProfilePage } from "@/components/pages/profile-page"
 import { EarningsToast } from "@/components/earnings-toast"
 import { Footer } from "@/components/footer"
@@ -38,6 +39,7 @@ export default function Page() {
             {ctx.currentPage === "token" && <TokenPage />}
             {ctx.currentPage === "create" && <CreatePage />}
             {ctx.currentPage === "rewards" && <RewardsPage />}
+            {ctx.currentPage === "earnings" && <EarningsHub />}
             {ctx.currentPage === "leaderboard" && <LeaderboardPage />}
             {ctx.currentPage === "profile" && <ProfilePage />}
             <Footer />
