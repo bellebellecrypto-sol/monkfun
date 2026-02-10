@@ -1,6 +1,9 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { Coins, ArrowRight } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useNavigation } from "@/components/app-shell"
 import { EpochHero } from "@/components/epoch-hero"
 import { StatsRow } from "@/components/stats-row"
 import { TierProgress } from "@/components/tier-progress"
@@ -18,6 +21,7 @@ function getEpochEnd(): Date {
 }
 
 export function RewardsPage() {
+  const { setPage } = useNavigation()
   const [showConfetti, setShowConfetti] = useState(false)
 
   const handleClaim = useCallback(() => {
@@ -52,6 +56,15 @@ export function RewardsPage() {
             claimableUSD1={128.35}
             onClaim={handleClaim}
           />
+          <Button
+            variant="outline"
+            className="w-full gap-2 bg-transparent text-sm"
+            onClick={() => setPage("earnings")}
+          >
+            <Coins className="h-4 w-4" />
+            View Earnings
+            <ArrowRight className="h-3.5 w-3.5 ml-auto" />
+          </Button>
         </div>
 
         {/* Right: Streaks + VIP */}
