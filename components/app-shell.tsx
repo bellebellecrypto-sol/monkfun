@@ -30,6 +30,9 @@ export type PageId =
   | "create"
   | "rewards"
   | "earnings"
+  | "earnings-creator"
+  | "earnings-delegated"
+  | "earnings-trader"
   | "leaderboard"
   | "profile"
 
@@ -61,6 +64,8 @@ const SIDEBAR_ITEMS: { id: PageId; label: string; icon: typeof Home }[] = [
   { id: "leaderboard", label: "Leaderboard", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
 ]
+
+const CLAIMABLE_TOTAL = 47.23
 
 const BOTTOM_NAV_ITEMS: { id: PageId | "more"; label: string; icon: typeof Home }[] = [
   { id: "home", label: "Home", icon: Home },
@@ -160,6 +165,16 @@ function TopBar({
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          {CLAIMABLE_TOTAL > 0 && (
+            <button
+              type="button"
+              onClick={() => setPage("earnings")}
+              className="hidden items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[11px] font-semibold text-primary transition-colors hover:bg-primary/10 sm:flex"
+            >
+              <Coins className="h-3 w-3" />
+              Claimable: ${CLAIMABLE_TOTAL}
+            </button>
+          )}
           <RewardsChip onClick={() => setPage("rewards")} />
           {/* Claimable earnings chip */}
           <button
@@ -237,7 +252,14 @@ function DesktopSidebar({
       <nav className="sticky top-[57px] flex flex-col gap-1 p-2">
         {SIDEBAR_ITEMS.map((item) => {
           const Icon = item.icon
-          const isActive = currentPage === item.id
+          const isActive =
+            item.id === "earnings"
+              ? currentPage === "earnings" ||
+                currentPage === "earnings-creator" ||
+                currentPage === "earnings-delegated" ||
+                currentPage === "earnings-trader"
+              : currentPage === item.id
+          const showBadge = item.id === "earnings" && CLAIMABLE_TOTAL > 0
           return (
             <div key={item.id} className="relative group">
               <button
@@ -256,6 +278,8 @@ function DesktopSidebar({
                     <span className="absolute -right-1.5 -top-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary px-0.5 text-[7px] font-bold text-primary-foreground">
                       $
                     </span>
+                  {showBadge && !expanded && (
+                    <span className="absolute -right-1.5 -top-1.5 flex h-2 w-2 rounded-full bg-primary" />
                   )}
                 </span>
                 <span
@@ -271,6 +295,11 @@ function DesktopSidebar({
                     </span>
                   )}
                 </span>
+                {showBadge && expanded && (
+                  <span className="ml-auto shrink-0 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold tabular-nums text-primary">
+                    ${CLAIMABLE_TOTAL}
+                  </span>
+                )}
               </button>
               {/* Tooltip when collapsed */}
               {!expanded && (
@@ -278,6 +307,8 @@ function DesktopSidebar({
                   {item.label}
                   {item.id === "earnings" && (
                     <span className="ml-1.5 text-primary">{CLAIMABLE_TOTAL} claimable</span>
+                  {showBadge && (
+                    <span className="ml-1.5 text-primary font-bold">${CLAIMABLE_TOTAL}</span>
                   )}
                 </div>
               )}
@@ -335,6 +366,15 @@ function MobileBottomNav({
 
   const isMoreActive = currentPage === "leaderboard" || currentPage === "profile" || currentPage === "earnings"
   const hasClaimable = true // mock: > 0
+  const isMoreActive =
+    currentPage === "leaderboard" ||
+    currentPage === "profile" ||
+    currentPage === "earnings" ||
+    currentPage === "earnings-creator" ||
+    currentPage === "earnings-delegated" ||
+    currentPage === "earnings-trader"
+
+  const hasClaimable = CLAIMABLE_TOTAL > 0
 
   return (
     <>
@@ -352,8 +392,17 @@ function MobileBottomNav({
                 { id: "earnings" as PageId, label: "Earnings", icon: Coins, badge: CLAIMABLE_TOTAL },
                 { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy, badge: null },
                 { id: "profile" as PageId, label: "Profile & Settings", icon: User, badge: null },
+                { id: "earnings" as PageId, label: "Earnings", icon: Coins },
+                { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy },
+                { id: "profile" as PageId, label: "Profile & Settings", icon: User },
               ].map((item) => {
                 const Icon = item.icon
+                const isEarningsActive =
+                  item.id === "earnings" &&
+                  (currentPage === "earnings" ||
+                    currentPage === "earnings-creator" ||
+                    currentPage === "earnings-delegated" ||
+                    currentPage === "earnings-trader")
                 return (
                   <button
                     key={item.id}
@@ -361,7 +410,7 @@ function MobileBottomNav({
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
                       "flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-colors",
-                      currentPage === item.id
+                      currentPage === item.id || isEarningsActive
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                     )}
@@ -371,6 +420,10 @@ function MobileBottomNav({
                     {item.badge && (
                       <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
                         {item.badge}
+                    {item.label}
+                    {item.id === "earnings" && hasClaimable && (
+                      <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold tabular-nums text-primary">
+                        ${CLAIMABLE_TOTAL}
                       </span>
                     )}
                   </button>
@@ -405,6 +458,8 @@ function MobileBottomNav({
                   {item.id === "more" && hasClaimable && (
                     <span className="absolute -right-2.5 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-0.5 text-[7px] font-bold text-primary-foreground">
                       $
+                    <span className="absolute -right-2.5 -top-1.5 min-w-[18px] rounded-full bg-primary px-1 py-px text-center text-[8px] font-bold leading-tight text-primary-foreground">
+                      ${CLAIMABLE_TOTAL}
                     </span>
                   )}
                 </span>
