@@ -15,6 +15,7 @@ import {
   MoreHorizontal,
   Pin,
   PinOff,
+  Coins,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -27,6 +28,10 @@ export type PageId =
   | "token"
   | "create"
   | "rewards"
+  | "earnings"
+  | "earnings-creator"
+  | "earnings-delegated"
+  | "earnings-trader"
   | "leaderboard"
   | "profile"
 
@@ -54,9 +59,12 @@ const SIDEBAR_ITEMS: { id: PageId; label: string; icon: typeof Home }[] = [
   { id: "trade", label: "Trade", icon: ArrowLeftRight },
   { id: "create", label: "Create", icon: PlusCircle },
   { id: "rewards", label: "Rewards", icon: Gift },
+  { id: "earnings", label: "Earnings", icon: Coins },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
 ]
+
+const CLAIMABLE_TOTAL = 47.23
 
 const BOTTOM_NAV_ITEMS: { id: PageId | "more"; label: string; icon: typeof Home }[] = [
   { id: "home", label: "Home", icon: Home },
@@ -155,6 +163,16 @@ function TopBar({
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          {CLAIMABLE_TOTAL > 0 && (
+            <button
+              type="button"
+              onClick={() => setPage("earnings")}
+              className="hidden items-center gap-1.5 rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-[11px] font-semibold text-primary transition-colors hover:bg-primary/10 sm:flex"
+            >
+              <Coins className="h-3 w-3" />
+              Claimable: ${CLAIMABLE_TOTAL}
+            </button>
+          )}
           <RewardsChip onClick={() => setPage("rewards")} />
           <Button
             size="sm"
@@ -223,7 +241,14 @@ function DesktopSidebar({
       <nav className="sticky top-[57px] flex flex-col gap-1 p-2">
         {SIDEBAR_ITEMS.map((item) => {
           const Icon = item.icon
-          const isActive = currentPage === item.id
+          const isActive =
+            item.id === "earnings"
+              ? currentPage === "earnings" ||
+                currentPage === "earnings-creator" ||
+                currentPage === "earnings-delegated" ||
+                currentPage === "earnings-trader"
+              : currentPage === item.id
+          const showBadge = item.id === "earnings" && CLAIMABLE_TOTAL > 0
           return (
             <div key={item.id} className="relative group">
               <button
@@ -236,7 +261,12 @@ function DesktopSidebar({
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 )}
               >
-                <Icon className="h-4.5 w-4.5 shrink-0" />
+                <span className="relative shrink-0">
+                  <Icon className="h-4.5 w-4.5" />
+                  {showBadge && !expanded && (
+                    <span className="absolute -right-1.5 -top-1.5 flex h-2 w-2 rounded-full bg-primary" />
+                  )}
+                </span>
                 <span
                   className={cn(
                     "truncate transition-opacity duration-200",
@@ -245,11 +275,19 @@ function DesktopSidebar({
                 >
                   {item.label}
                 </span>
+                {showBadge && expanded && (
+                  <span className="ml-auto shrink-0 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold tabular-nums text-primary">
+                    ${CLAIMABLE_TOTAL}
+                  </span>
+                )}
               </button>
               {/* Tooltip when collapsed */}
               {!expanded && (
                 <div className="pointer-events-none absolute left-full top-1/2 z-50 ml-2 -translate-y-1/2 rounded-md border border-border bg-popover px-2.5 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-md transition-opacity group-hover:opacity-100">
                   {item.label}
+                  {showBadge && (
+                    <span className="ml-1.5 text-primary font-bold">${CLAIMABLE_TOTAL}</span>
+                  )}
                 </div>
               )}
             </div>
@@ -304,7 +342,15 @@ function MobileBottomNav({
     }
   }
 
-  const isMoreActive = currentPage === "leaderboard" || currentPage === "profile"
+  const isMoreActive =
+    currentPage === "leaderboard" ||
+    currentPage === "profile" ||
+    currentPage === "earnings" ||
+    currentPage === "earnings-creator" ||
+    currentPage === "earnings-delegated" ||
+    currentPage === "earnings-trader"
+
+  const hasClaimable = CLAIMABLE_TOTAL > 0
 
   return (
     <>
@@ -319,10 +365,17 @@ function MobileBottomNav({
             <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-border" />
             <nav className="flex flex-col gap-1">
               {[
+                { id: "earnings" as PageId, label: "Earnings", icon: Coins },
                 { id: "leaderboard" as PageId, label: "Leaderboard", icon: Trophy },
                 { id: "profile" as PageId, label: "Profile & Settings", icon: User },
               ].map((item) => {
                 const Icon = item.icon
+                const isEarningsActive =
+                  item.id === "earnings" &&
+                  (currentPage === "earnings" ||
+                    currentPage === "earnings-creator" ||
+                    currentPage === "earnings-delegated" ||
+                    currentPage === "earnings-trader")
                 return (
                   <button
                     key={item.id}
@@ -330,13 +383,18 @@ function MobileBottomNav({
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
                       "flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-colors",
-                      currentPage === item.id
+                      currentPage === item.id || isEarningsActive
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                     )}
                   >
                     <Icon className="h-5 w-5" />
                     {item.label}
+                    {item.id === "earnings" && hasClaimable && (
+                      <span className="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-bold tabular-nums text-primary">
+                        ${CLAIMABLE_TOTAL}
+                      </span>
+                    )}
                   </button>
                 )
               })}
@@ -364,7 +422,14 @@ function MobileBottomNav({
                   isActive ? "text-primary" : "text-muted-foreground"
                 )}
               >
-                <Icon className="h-5 w-5" />
+                <span className="relative">
+                  <Icon className="h-5 w-5" />
+                  {item.id === "more" && hasClaimable && (
+                    <span className="absolute -right-2.5 -top-1.5 min-w-[18px] rounded-full bg-primary px-1 py-px text-center text-[8px] font-bold leading-tight text-primary-foreground">
+                      ${CLAIMABLE_TOTAL}
+                    </span>
+                  )}
+                </span>
                 {item.label}
               </button>
             )
