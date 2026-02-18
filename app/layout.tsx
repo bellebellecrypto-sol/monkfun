@@ -1,25 +1,28 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Space_Grotesk, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ReduceMotionProvider } from "@/components/reduce-motion-provider"
 
 import "./globals.css"
 
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" })
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+})
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
 })
 
 export const metadata: Metadata = {
-  title: "MONKfun | Create, Trade & Earn Rakeback",
+  title: "MONKfun | Creator's Trading Arena",
   description:
-    "Create memecoins, trade tokens, and earn cashback on every trade. Volume-based rakeback rewards paid every 3-day cycle.",
+    "The gamified, high-frequency crypto trading dashboard. Create memecoins, trade tokens, and earn rakeback.",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#f5f0ea",
+  themeColor: "#050505",
   width: "device-width",
   initialScale: 1,
 }
@@ -32,11 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${spaceGrotesk.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
