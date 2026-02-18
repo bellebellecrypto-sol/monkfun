@@ -18,13 +18,20 @@ function generateInitialData(count: number): number[] {
 }
 
 export function EKGChart() {
-  const [prices, setPrices] = useState<number[]>(() => generateInitialData(60))
+  const [prices, setPrices] = useState<number[]>([])
   const [isDumping, setIsDumping] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const svgRef = useRef<SVGSVGElement>(null)
 
-  const latestPrice = prices[prices.length - 1]
-  const prevPrice = prices[prices.length - 2] || latestPrice
-  const priceChange = ((latestPrice - prevPrice) / prevPrice) * 100
+  // Generate initial data only on the client to avoid hydration mismatch
+  useEffect(() => {
+    setPrices(generateInitialData(60))
+    setMounted(true)
+  }, [])
+
+  const latestPrice = prices.length > 0 ? prices[prices.length - 1] : 1.0
+  const prevPrice = prices.length > 1 ? prices[prices.length - 2] : latestPrice
+  const priceChange = prevPrice !== 0 ? ((latestPrice - prevPrice) / prevPrice) * 100 : 0
   const isUp = priceChange >= 0
 
   const addPrice = useCallback(() => {
@@ -46,9 +53,10 @@ export function EKGChart() {
   }, [])
 
   useEffect(() => {
+    if (!mounted) return
     const interval = setInterval(addPrice, 1200)
     return () => clearInterval(interval)
-  }, [addPrice])
+  }, [addPrice, mounted])
 
   // Build SVG path
   const width = 600
@@ -94,7 +102,7 @@ export function EKGChart() {
         </div>
         <div className="flex items-center gap-3">
           <span className="animate-breathe text-lg font-extrabold tabular-nums text-foreground">
-            ${latestPrice.toFixed(4)}
+            {mounted ? `$${latestPrice.toFixed(4)}` : "$-.----"}
           </span>
           <span
             className={cn(
@@ -107,66 +115,72 @@ export function EKGChart() {
             ) : (
               <TrendingDown className="h-3 w-3" />
             )}
-            {isUp ? "+" : ""}{priceChange.toFixed(2)}%
+            {mounted ? `${isUp ? "+" : ""}${priceChange.toFixed(2)}%` : "--.--%" }
           </span>
         </div>
       </div>
 
       {/* Chart */}
       <div className="relative px-2 py-4">
-        <svg
-          ref={svgRef}
-          viewBox={`0 0 ${width} ${height}`}
-          className="h-32 w-full sm:h-40"
-          preserveAspectRatio="none"
-          aria-label="Price heartbeat chart"
-        >
-          <defs>
-            <linearGradient id="ekg-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop
-                offset="0%"
-                stopColor={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
-                stopOpacity="0.2"
-              />
-              <stop
-                offset="100%"
-                stopColor={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
-                stopOpacity="0"
-              />
-            </linearGradient>
-            <filter id="neon-glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+        {prices.length > 1 ? (
+          <svg
+            ref={svgRef}
+            viewBox={`0 0 ${width} ${height}`}
+            className="h-32 w-full sm:h-40"
+            preserveAspectRatio="none"
+            aria-label="Price heartbeat chart"
+          >
+            <defs>
+              <linearGradient id="ekg-gradient" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="0%"
+                  stopColor={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
+                  stopOpacity="0.2"
+                />
+                <stop
+                  offset="100%"
+                  stopColor={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
+                  stopOpacity="0"
+                />
+              </linearGradient>
+              <filter id="neon-glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
-          {/* Area fill */}
-          <path d={areaD} fill="url(#ekg-gradient)" />
+            {/* Area fill */}
+            <path d={areaD} fill="url(#ekg-gradient)" />
 
-          {/* Main line with glow */}
-          <path
-            d={pathD}
-            fill="none"
-            stroke={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            filter="url(#neon-glow)"
-            className="animate-breathe"
-          />
+            {/* Main line with glow */}
+            <path
+              d={pathD}
+              fill="none"
+              stroke={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              filter="url(#neon-glow)"
+              className="animate-breathe"
+            />
 
-          {/* Dot at latest point */}
-          <circle
-            cx={points[points.length - 1]?.x || 0}
-            cy={points[points.length - 1]?.y || 0}
-            r="4"
-            fill={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
-            className="animate-pulse"
-          />
-        </svg>
+            {/* Dot at latest point */}
+            <circle
+              cx={points[points.length - 1]?.x || 0}
+              cy={points[points.length - 1]?.y || 0}
+              r="4"
+              fill={isUp ? "hsl(var(--toxic))" : "hsl(var(--destructive))"}
+              className="animate-pulse"
+            />
+          </svg>
+        ) : (
+          <div className="flex h-32 w-full items-center justify-center sm:h-40">
+            <span className="text-xs text-muted-foreground">Loading chart...</span>
+          </div>
+        )}
 
         {/* Dump flash overlay */}
         {isDumping && (

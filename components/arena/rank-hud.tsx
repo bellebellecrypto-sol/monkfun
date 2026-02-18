@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Flame, Snowflake, TrendingUp, Trophy } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -78,7 +78,12 @@ function SpeedometerGauge({ velocity, maxVelocity = 100 }: { velocity: number; m
 export function RankHUD() {
   const [velocity, setVelocity] = useState(72)
   const [isInactive, setIsInactive] = useState(false)
-  const [lastActivity, setLastActivity] = useState(Date.now())
+  const lastActivityRef = useRef(0)
+
+  // Initialize lastActivity on mount
+  useEffect(() => {
+    lastActivityRef.current = Date.now()
+  }, [])
 
   // Simulate velocity changes
   useEffect(() => {
@@ -87,7 +92,7 @@ export function RankHUD() {
         const change = Math.floor(Math.random() * 11) - 4
         return Math.max(0, Math.min(100, prev + change))
       })
-      setLastActivity(Date.now())
+      lastActivityRef.current = Date.now()
     }, 4000)
     return () => clearInterval(interval)
   }, [])
@@ -95,14 +100,14 @@ export function RankHUD() {
   // Inactivity detection (simulate cooling)
   useEffect(() => {
     const checkInactivity = setInterval(() => {
-      if (Date.now() - lastActivity > 15000) {
+      if (Date.now() - lastActivityRef.current > 15000) {
         setIsInactive(true)
       } else {
         setIsInactive(false)
       }
     }, 5000)
     return () => clearInterval(checkInactivity)
-  }, [lastActivity])
+  }, [])
 
   const isFire = velocity > 70
 
