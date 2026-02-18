@@ -10,85 +10,98 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 220 20% 10%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 5%;
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 0 0% 5%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
-    --primary: 24 95% 50%;
+    --popover-foreground: 0 0% 5%;
+    --primary: 11 100% 62%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 40 15% 93%;
-    --secondary-foreground: 220 15% 25%;
-    --muted: 40 10% 93%;
-    --muted-foreground: 220 10% 45%;
-    --accent: 24 95% 50%;
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 20%;
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 11 100% 62%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 10% 88%;
-    --input: 40 10% 88%;
-    --ring: 24 95% 50%;
-    --chart-1: 24 95% 50%;
-    --chart-2: 40 90% 55%;
-    --chart-3: 160 60% 40%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 11 100% 62%;
+    --radius: 0.75rem;
+
+    /* Arena custom tokens */
+    --inferno: 11 100% 62%;
+    --jackpot: 46 98% 50%;
+    --toxic: 157 100% 50%;
+    --chart-1: 11 100% 62%;
+    --chart-2: 46 98% 50%;
+    --chart-3: 157 100% 50%;
     --chart-4: 280 65% 55%;
     --chart-5: 340 75% 50%;
-    --radius: 0.75rem;
     --monk: 24 95% 50%;
     --monk-glow: 24 100% 58%;
-    --neon-green: 145 70% 38%;
-    --gold: 43 96% 46%;
+    --neon-green: 157 100% 50%;
+    --gold: 46 98% 50%;
     --diamond: 200 80% 50%;
-    --sidebar-background: 40 15% 95%;
-    --sidebar-foreground: 220 20% 10%;
-    --sidebar-primary: 24 95% 50%;
+
+    --sidebar-background: 0 0% 95%;
+    --sidebar-foreground: 0 0% 5%;
+    --sidebar-primary: 11 100% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 40 15% 90%;
-    --sidebar-accent-foreground: 220 20% 10%;
-    --sidebar-border: 40 10% 88%;
-    --sidebar-ring: 24 95% 50%;
+    --sidebar-accent: 0 0% 90%;
+    --sidebar-accent-foreground: 0 0% 5%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 11 100% 62%;
   }
 
+  /* Obsidian Mode (Default Dark) */
   .dark {
-    --background: 220 20% 4%;
-    --foreground: 40 10% 92%;
-    --card: 220 15% 8%;
-    --card-foreground: 40 10% 92%;
-    --popover: 220 15% 8%;
-    --popover-foreground: 40 10% 92%;
-    --primary: 24 95% 53%;
+    --background: 0 0% 2%;
+    --foreground: 0 0% 92%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 92%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 92%;
+    --primary: 11 100% 62%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 15% 13%;
-    --secondary-foreground: 40 10% 85%;
-    --muted: 220 12% 12%;
-    --muted-foreground: 220 10% 50%;
-    --accent: 24 95% 53%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 80%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 11 100% 62%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 16%;
-    --input: 220 15% 16%;
-    --ring: 24 95% 53%;
-    --chart-1: 24 95% 53%;
-    --chart-2: 40 90% 55%;
-    --chart-3: 160 60% 45%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 11 100% 62%;
+    --radius: 0.75rem;
+
+    /* Arena custom tokens */
+    --inferno: 11 100% 62%;
+    --jackpot: 46 98% 50%;
+    --toxic: 157 100% 50%;
+    --chart-1: 11 100% 62%;
+    --chart-2: 46 98% 50%;
+    --chart-3: 157 100% 50%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --radius: 0.75rem;
     --monk: 24 95% 53%;
     --monk-glow: 24 100% 60%;
-    --neon-green: 145 80% 50%;
-    --gold: 43 96% 56%;
+    --neon-green: 157 100% 50%;
+    --gold: 46 98% 50%;
     --diamond: 200 90% 65%;
-    --sidebar-background: 220 20% 6%;
-    --sidebar-foreground: 40 10% 92%;
-    --sidebar-primary: 24 95% 53%;
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 11 100% 62%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 13%;
-    --sidebar-accent-foreground: 40 10% 92%;
-    --sidebar-border: 220 15% 16%;
-    --sidebar-ring: 24 95% 53%;
+    --sidebar-accent: 0 0% 9%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 11 100% 62%;
   }
 }
 
@@ -101,7 +114,21 @@
   }
 }
 
-/* Glassmorphism utility - Light */
+/* ── Noise Texture Overlay ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.dark body::before {
+  opacity: 0.04;
+}
+
+/* ── Glassmorphism Utility ── */
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
@@ -109,72 +136,59 @@
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
+.dark .glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
 
 .glass-bright {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
-
-/* Glassmorphism utility - Dark */
-.dark .glass {
-  background: rgba(15, 18, 30, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: none;
-}
-
 .dark .glass-bright {
-  background: rgba(20, 24, 40, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Subtle grain texture for light mode */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.3;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+/* ── Glow Effects ── */
+.glow-inferno {
+  box-shadow: 0 0 20px rgba(255, 114, 94, 0.3), 0 0 60px rgba(255, 114, 94, 0.1);
 }
-
-.dark body::before {
-  opacity: 0;
+.glow-jackpot {
+  box-shadow: 0 0 20px rgba(253, 194, 2, 0.4), 0 0 60px rgba(253, 194, 2, 0.15);
 }
-
-/* Neon glow - subtle in light, full in dark */
+.glow-toxic {
+  box-shadow: 0 0 20px rgba(0, 255, 163, 0.3), 0 0 60px rgba(0, 255, 163, 0.1);
+}
 .glow-orange {
   box-shadow: 0 0 12px rgba(249, 115, 22, 0.15), 0 0 30px rgba(249, 115, 22, 0.06);
 }
 .dark .glow-orange {
   box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), 0 0 60px rgba(249, 115, 22, 0.1);
 }
-
 .glow-orange-sm {
   box-shadow: 0 0 8px rgba(249, 115, 22, 0.1);
 }
 .dark .glow-orange-sm {
   box-shadow: 0 0 10px rgba(249, 115, 22, 0.2), 0 0 30px rgba(249, 115, 22, 0.05);
 }
-
 .glow-gold {
   box-shadow: 0 0 12px rgba(234, 179, 8, 0.15);
 }
 .dark .glow-gold {
   box-shadow: 0 0 20px rgba(234, 179, 8, 0.3), 0 0 60px rgba(234, 179, 8, 0.1);
 }
-
 .glow-diamond {
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
 }
 .dark .glow-diamond {
   box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), 0 0 60px rgba(56, 189, 248, 0.1);
 }
-
 .text-glow-orange {
   text-shadow: none;
 }
@@ -182,113 +196,100 @@ body::before {
   text-shadow: 0 0 20px rgba(249, 115, 22, 0.5), 0 0 40px rgba(249, 115, 22, 0.2);
 }
 
-/* Confetti keyframes */
+/* ── Keyframe Animations ── */
 @keyframes confetti-fall {
   0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
-
-@keyframes confetti-burst {
-  0% { transform: scale(0) rotate(0deg); opacity: 1; }
-  50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
-  100% { transform: scale(0) rotate(360deg); opacity: 0; }
-}
-
 @keyframes shimmer {
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
-
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25); }
-  50% { box-shadow: 0 2px 16px rgba(249, 115, 22, 0.4); }
+  0%, 100% { box-shadow: 0 0 15px rgba(255, 114, 94, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(255, 114, 94, 0.6), 0 0 60px rgba(255, 114, 94, 0.2); }
 }
-
-:is(.dark) {
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); }
-    50% { box-shadow: 0 0 30px rgba(249, 115, 22, 0.6), 0 0 60px rgba(249, 115, 22, 0.2); }
-  }
-}
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
 }
-
-@keyframes streak-pulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.1); }
-}
-
 @keyframes slide-up {
   0% { transform: translateY(20px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-
 @keyframes count-up {
   0% { transform: translateY(100%); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
-
-.animate-confetti-fall {
-  animation: confetti-fall 3s ease-in forwards;
+@keyframes streak-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+@keyframes reel-spin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+@keyframes slide-in-left {
+  0% { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes jackpot-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(253, 194, 2, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(253, 194, 2, 0.7), 0 0 80px rgba(253, 194, 2, 0.3); }
+}
+@keyframes fire-border {
+  0%, 100% { border-color: rgba(255, 114, 94, 0.6); }
+  25% { border-color: rgba(253, 194, 2, 0.8); }
+  50% { border-color: rgba(255, 114, 94, 1); }
+  75% { border-color: rgba(253, 194, 2, 0.6); }
+}
+@keyframes chromatic-glitch {
+  0%, 90%, 100% { filter: none; transform: translateX(0); }
+  92% { filter: hue-rotate(90deg); transform: translateX(-2px); }
+  94% { filter: hue-rotate(-90deg) saturate(2); transform: translateX(2px); }
+  96% { filter: hue-rotate(45deg); transform: translateX(-1px); }
+  98% { filter: none; transform: translateX(1px); }
+}
+@keyframes cracked-ice {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+@keyframes gold-fill {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
 }
 
-.animate-shimmer {
-  animation: shimmer 2s infinite linear;
-  background-size: 200% 100%;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-streak-pulse {
-  animation: streak-pulse 1.5s ease-in-out infinite;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.5s ease-out forwards;
-}
-
-.animate-count-up {
-  animation: count-up 0.4s ease-out forwards;
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
-}
-
-/* Live activity ticker */
 @keyframes ticker-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-.animate-ticker {
-  animation: ticker-scroll 30s linear infinite;
-}
+.animate-confetti-fall { animation: confetti-fall 3s ease-in forwards; }
+.animate-shimmer { animation: shimmer 2s infinite linear; background-size: 200% 100%; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
+.animate-count-up { animation: count-up 0.4s ease-out forwards; }
+.animate-streak-pulse { animation: streak-pulse 1.5s ease-in-out infinite; }
+.animate-breathe { animation: breathe 2s ease-in-out infinite; }
+.animate-slide-in-left { animation: slide-in-left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-jackpot-pulse { animation: jackpot-pulse 1.5s ease-in-out infinite; }
+.animate-fire-border { animation: fire-border 1s ease-in-out infinite; }
+.animate-chromatic-glitch { animation: chromatic-glitch 4s ease-in-out infinite; }
+.animate-cracked-ice { animation: cracked-ice 3s ease-in-out infinite; }
+.animate-ticker { animation: ticker-scroll 30s linear infinite; }
 
-/* Reduce motion - disables all custom animations */
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
+
+/* ── Reduce Motion ── */
 .reduce-motion .animate-ticker,
 .reduce-motion .animate-shimmer,
 .reduce-motion .animate-pulse-glow,
@@ -297,7 +298,18 @@ body::before {
 .reduce-motion .animate-slide-up,
 .reduce-motion .animate-count-up,
 .reduce-motion .animate-confetti-fall,
+.reduce-motion .animate-breathe,
+.reduce-motion .animate-slide-in-left,
+.reduce-motion .animate-jackpot-pulse,
+.reduce-motion .animate-fire-border,
+.reduce-motion .animate-chromatic-glitch,
+.reduce-motion .animate-cracked-ice,
 .reduce-motion .animate-pulse {
   animation: none !important;
   transition: none !important;
+}
+
+/* ── Tabular Nums for odometer-like numbers ── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }

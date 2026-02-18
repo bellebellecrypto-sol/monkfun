@@ -49,6 +49,9 @@ const config: Config = {
         "neon-green": "hsl(var(--neon-green))",
         gold: "hsl(var(--gold))",
         diamond: "hsl(var(--diamond))",
+        inferno: "hsl(var(--inferno))",
+        jackpot: "hsl(var(--jackpot))",
+        toxic: "hsl(var(--toxic))",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
